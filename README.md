@@ -6,3 +6,5 @@ This is the repo of our course project for "Software Development for Start-up En
   - BALCH, ANDREW
   - MÉNARD, STEVEN BENOÎT
   - SCHULTZ, ZACH
+  - KHAW, JEREMY
+
