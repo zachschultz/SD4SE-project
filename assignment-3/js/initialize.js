@@ -2,14 +2,46 @@ var app = app || {};
 
 app.initialize = function() {
 
+  map = '';
+  markers = [];
+
   var geocoder;
   var user_addr;
+  var latlng;
+
+  google.maps.event.addDomListener(window, 'load');
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
   }
 
-  //Get the latitude and the longitude;
+
+  // Initialization data for Google Map
+  function initGoogleMap() {
+    console.log("initializing map");
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
+      center: latlng,
+      zoom: 15
+    });
+    var marker = new google.maps.Marker({
+      position: map.getCenter(),
+      map: map,
+      title: 'You!'
+    });
+    markers.push(marker);
+
+    var infowindow = new google.maps.InfoWindow({
+      content: 'You!'
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(marker.get('map'), marker);
+      map.setCenter(marker.getPosition());
+    });
+
+  }
+
+  //Get the user's latitude and the longitude
   function successFunction(position) {
     var user_lat = position.coords.latitude;
     var user_lng = position.coords.longitude;
@@ -22,40 +54,32 @@ app.initialize = function() {
     alert("Geocoder failed");
   }
 
+  // Display user's location to the browser
   function displayInfo(addr) {
     $userLocSpan = $('#user_loc');
     $userLocSpan.text(addr);
+    $destForm.show();
+    $destFormSubmit.on('click', function(e) {
+      e.preventDefault();
+      var dest_str = $destForm.find('input[type=text]').val();
+      app.getDestSearch(dest_str);
+    });
+
   }
+
+
 
   function codeLatLng(lat, lng) {
 
-    var latlng = new google.maps.LatLng(lat, lng);
+    latlng = new google.maps.LatLng(lat, lng);
+    initGoogleMap();
     geocoder.geocode({'latLng': latlng}, function(results, status) {
 
       if (status == google.maps.GeocoderStatus.OK) {
-        console.log(results)
-
         user_addr = results[0].formatted_address;
-        console.log(user_addr);
+
         if (results[1]) {
-        //formatted address
-        // alert(results[0].formatted_address)
-        //find country name
-             for (var i=0; i<results[0].address_components.length; i++) {
-            for (var b=0;b<results[0].address_components[i].types.length;b++) {
-
-            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                    //this is the object you are looking for
-                    city= results[0].address_components[i];
-                    break;
-                }
-            }
-        }
-        //city data
-        // alert(city.short_name + " " + city.long_name)
-
-        displayInfo(user_addr);
+          displayInfo(user_addr);
         } else {
           alert("No results found");
         }
@@ -65,4 +89,6 @@ app.initialize = function() {
 
     });
   }
+
+  google.maps.event.addDomListener(window, 'load');
 };
