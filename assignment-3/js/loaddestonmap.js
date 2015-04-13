@@ -1,13 +1,33 @@
 var app = app || {};
 
-app.loadDestOnMap = function($this) {
+app.loadDestOnMap = function(resultData) {
+
+  // This function clears the map of the markers so we don't
+  //  get overlapping location markers and direction markers
+  function clearMapOfMarkers() {
+      var startMarker = markers[0];
+      var endMarker = markers[1];
+
+      for (var i = 0; i < markers.length; i++) {
+            console.log('setting '+markers[i].title+' map to null');
+            markers[i].setMap(null);
+            markers[i] = null;
+      }
+
+      // Place back markers into markers array
+      markers = [];
+      markers.push(startMarker);
+      markers.push(endMarker);
+  }
 
   // Google Maps API variables
   var directionsService = new google.maps.DirectionsService();
 
-  var $panelTitle = $this.find('h3#result')[0];
-  var dest_lat = $panelTitle.dataset.lat;
-  var dest_lng = $panelTitle.dataset.long;
+  console.log(resultData);
+
+  var dest_title = resultData.name;
+  var dest_lat = resultData.geometry.location.k;
+  var dest_lng = resultData.geometry.location.D;
 
   // Make a LatLng object for Google Maps
   var destLatLng = new google.maps.LatLng(dest_lat, dest_lng);
@@ -15,26 +35,22 @@ app.loadDestOnMap = function($this) {
   var destMarker = new google.maps.Marker({
     position: destLatLng,
     map: map,
-    title:$panelTitle.innerText,
+    title:dest_title,
   });
 
   markers.push(destMarker);
+  console.log("adding "+destMarker.title+" to markers: ");
+  console.log(markers);
 
   // Make an infowindow for the destination marker
   var dest_infowindow = new google.maps.InfoWindow({
-    content: $panelTitle.innerText,
+    content: dest_title
   });
+
   google.maps.event.addListener(destMarker, 'click', function() {
     dest_infowindow.open(destMarker.get('map'), destMarker);
     map.setCenter(destMarker.getPosition());
   });
-
-  // Make a direction panel to give readable directions
-  // directionsDisplay = new google.maps.DirectionsRenderer();
-  // directionsDisplay.setMap(map);
-  // directionsDisplay.setPanel(document.getElementById('directions-panel'));
-
-
 
   // Show travel mode options and get travel mode selector (initially `DRIVING`)
   $travelModeContainer.show();
@@ -54,19 +70,31 @@ app.loadDestOnMap = function($this) {
     }
     directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(map);
+    // directionsDisplay.setOptions({suppressMarkers:true});
+
+
+
+
     directionsDisplay.setPanel(document.getElementById('directions-panel'));
 
     var selectedMode = $travelMode[0].value;
     var start = markers[0].position;
     var end = markers[1].position;
+
+    // Clear map of markers, fixes overlap of direction/location markers
+    clearMapOfMarkers();
+
     var request = {
       origin:start,
       destination:end,
       travelMode: google.maps.TravelMode[selectedMode],
       // [travelMode]
     };
+
     directionsService.route(request, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
+console.log("Directions reponse is: ");
+        console.log(response);
         directionsDisplay.setDirections(response);
       } else {
         alert('Sorry, I couldn\'t find any routes for that method of travel.');

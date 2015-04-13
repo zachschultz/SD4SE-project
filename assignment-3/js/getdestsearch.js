@@ -1,19 +1,13 @@
 var app = app || {};
 
-app.getDestSearch = function(dest_str) {
-
-  service = google.maps.places.PlacesService(map);
-
-  geocoder = new google.maps.Geocoder();
-
-  // Callback function for each result list item
-  function addToMapAndGetDirections() {
+// Callback function for each result list item
+  app.addToMapAndGetDirections = function(resultData) {
     return function() {
 
       // Check if we already have a second marker on map, if so, remove it
       if (markers.length == 2) {
         var userMarker = markers[0];
-        console.log("already have 2 markers");
+        console.log("already have "+markers.length+" markers");
         // Erase all markers from map
         for (var i = 0; i < markers.length; i++) {
           console.log('setting '+markers[i].title+' map to null');
@@ -22,22 +16,19 @@ app.getDestSearch = function(dest_str) {
         }
         // Reset markers array, push original marker
         markers = [];
-        markers[0] = userMarker;
+        markers.push(userMarker);
         markers[0].setMap(map);
-
-        // If we have directions already, remove it from the map
-        //  also, refresh the existing directions panel div
-        // if (typeof directionsDisplay !== 'undefined') {
-        //   directionsDisplay.setMap(null);
-        //   directionsDisplay = null;
-        //   $('#directions-panel').empty();
-        // }
       }
 
-      app.loadDestOnMap($(this));
+      app.loadDestOnMap(resultData);
     };
-  }
+  };
 
+app.getDestSearch = function(dest_str) {
+
+  service = google.maps.places.PlacesService(map);
+
+  geocoder = new google.maps.Geocoder();
   geocoder.geocode({'address': dest_str}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
 
@@ -58,7 +49,7 @@ app.getDestSearch = function(dest_str) {
           var $res = $('<li><div class="panel panel-default"><div class="panel-heading"><h3 id="result" data-id="'+i+'" data-lat="'+lat+'" data-long="'+long+'" class="panel-title">'+addr+'</h3></div></div></li>');
 
           $ul.append($res);
-          $res.on('click', addToMapAndGetDirections());
+          $res.on('click', app.addToMapAndGetDirections(resultData));
 
           // Lighten up result panel on user mouseover
           $res.find('div.panel-heading').on('mouseover', function() {

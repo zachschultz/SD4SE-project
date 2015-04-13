@@ -8,11 +8,15 @@ app.initialize = function(getNearbyAttractions) {
   var geocoder;
   var user_addr;
   var latlng;
+  console.log('running initialize()');
 
   google.maps.event.addDomListener(window, 'load');
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+    console.log('checking geolocation');
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction, {maximumAge:60000, timeout:10000, enableHighAccuracy:true});
+
+    // navigator.geolocation.getCurrentPosition(successFunction,errorFunction,{timeout:10000});
   }
 
 
@@ -43,6 +47,7 @@ app.initialize = function(getNearbyAttractions) {
 
   //Get the user's latitude and the longitude
   function successFunction(position) {
+    console.log('geolocation success');
     var user_lat = position.coords.latitude;
     var user_lng = position.coords.longitude;
     // initialize our Geocoder object
@@ -50,7 +55,9 @@ app.initialize = function(getNearbyAttractions) {
     codeLatLng(user_lat, user_lng, displayInfo);
   }
 
-  function errorFunction(){
+  function errorFunction(e){
+    console.log(e);
+    console.log('geolocation error');
     alert("Geocoder failed");
   }
 
