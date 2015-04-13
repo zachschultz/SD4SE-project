@@ -32,6 +32,10 @@ ul#resultsUl {
 input[type=submit] {
 }
 
+span#loading {
+  font-style: italic;
+  color: #888;
+}
 
 /*// google maps directions*/
 #directions-panel {

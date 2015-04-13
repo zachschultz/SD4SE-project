@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.initialize = function() {
+app.initialize = function(getNearbyAttractions) {
 
   map = '';
   markers = [];
@@ -57,6 +57,9 @@ app.initialize = function() {
   // Display user's location to the browser
   function displayInfo(addr) {
     $userLocSpan = $('#user_loc');
+
+    app.removeLoadingSpan($userLocSpan);
+
     $userLocSpan.text(addr);
     $destForm.show();
     $destFormSubmit.on('click', function(e) {
@@ -77,7 +80,7 @@ app.initialize = function() {
 
       if (status == google.maps.GeocoderStatus.OK) {
         user_addr = results[0].formatted_address;
-
+        getNearbyAttractions(latlng);
         if (results[1]) {
           displayInfo(user_addr);
         } else {
@@ -91,4 +94,6 @@ app.initialize = function() {
   }
 
   google.maps.event.addDomListener(window, 'load');
+
+
 };
