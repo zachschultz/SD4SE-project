@@ -1,3 +1,11 @@
+body{
+    /*background-image:url('/img/colosseum.png');*/
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
 .address {
   font-size: 20px;
   padding-bottom: 10px;
@@ -7,6 +15,11 @@
 }
 .hidden {
   display: none;
+}
+
+.styled-header {
+  color: #646464;
+  font-style: italic;
 }
 
 a#logo-link {
@@ -36,6 +49,15 @@ li.attraction {
 
   margin-bottom: 5px;
 }
+
+li div.panel.panel-default {
+  margin-bottom: 2px;
+}
+
+li div div.panel-heading {
+  padding: 0;
+
+}
 span.attraction-name {
   font-size: 16px;
   font-style: bold;
@@ -62,8 +84,14 @@ span#loading {
 /*// google maps directions*/
 #directions-panel {
   height: 100%;
-  float: right;
-  width: 390px;
+  /*float: right;*/
+  width: 430px;
+  clear: both;
   overflow: auto;
+}
+
+div#map-canvas {
+  float: left;
+  margin-right: 0;
 }
 

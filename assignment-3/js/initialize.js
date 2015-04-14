@@ -8,15 +8,15 @@ app.initialize = function(getNearbyAttractions) {
   var geocoder;
   var user_addr;
   var latlng;
+
   console.log('running initialize()');
 
+  // Activate google map
   google.maps.event.addDomListener(window, 'load');
 
   if (navigator.geolocation) {
     console.log('checking geolocation');
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction, {maximumAge:60000, timeout:10000, enableHighAccuracy:true});
-
-    // navigator.geolocation.getCurrentPosition(successFunction,errorFunction,{timeout:10000});
   }
 
 
@@ -57,27 +57,18 @@ app.initialize = function(getNearbyAttractions) {
 
   function errorFunction(e){
     console.log(e);
-    console.log('geolocation error');
+    console.log('Geolocation failed!');
     alert("Geocoder failed");
   }
 
   // Display user's location to the browser
+  //  Enable `$destForm`
   function displayInfo(addr) {
     $userLocSpan = $('#user_loc');
-
     app.removeLoadingSpan($userLocSpan);
-
     $userLocSpan.text(addr);
     $destForm.show();
-    $destFormSubmit.on('click', function(e) {
-      e.preventDefault();
-      var dest_str = $destForm.find('input[type=text]').val();
-      app.getDestSearch(dest_str);
-    });
-
   }
-
-
 
   function codeLatLng(lat, lng) {
 
@@ -99,8 +90,5 @@ app.initialize = function(getNearbyAttractions) {
 
     });
   }
-
-  google.maps.event.addDomListener(window, 'load');
-
 
 };

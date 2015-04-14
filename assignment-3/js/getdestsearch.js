@@ -1,28 +1,50 @@
 var app = app || {};
 
 // Callback function for each result list item
-  app.addToMapAndGetDirections = function(resultData) {
-    return function() {
+app.addToMapAndGetDirections = function(resultData) {
+  return function() {
 
-      // Check if we already have a second marker on map, if so, remove it
-      if (markers.length == 2) {
-        var userMarker = markers[0];
-        console.log("already have "+markers.length+" markers");
-        // Erase all markers from map
-        for (var i = 0; i < markers.length; i++) {
-          console.log('setting '+markers[i].title+' map to null');
-          markers[i].setMap(null);
-          markers[i] = null;
-        }
-        // Reset markers array, push original marker
-        markers = [];
-        markers.push(userMarker);
-        markers[0].setMap(map);
+
+
+    if ($('div.partyTest').children().length > 0) {
+      console.log('party test yall!');
+      $('div.partyTest').empty();
+    }
+
+    // Check if we already have a second marker on map, if so, remove it
+    if (markers.length == 2) {
+      var userMarker = markers[0];
+      console.log("already have "+markers.length+" markers");
+      // Erase all markers from map
+      for (var i = 0; i < markers.length; i++) {
+        console.log('setting '+markers[i].title+' map to null');
+        markers[i].setMap(null);
+        markers[i] = null;
       }
+      // Reset markers array, push original marker
+      markers = [];
+      markers.push(userMarker);
+      markers[0].setMap(map);
+    }
 
-      app.loadDestOnMap(resultData);
-    };
+    app.loadDestOnMap(resultData);
+    app.newLocationSearch(resultData);
   };
+};
+
+// Callback to show more info on list item mouseover/mouseout
+app.showMoreInfo = function($this, $extraInfoUl) {
+  return function() {
+    $this.addClass('lightenPanel');
+    $extraInfoUl.show();
+  };
+};
+app.hideMoreInfo = function($this, $extraInfoUl) {
+  return function() {
+    $this.removeClass('lightenPanel');
+    $extraInfoUl.hide();
+  };
+};
 
 app.getDestSearch = function(dest_str) {
 
@@ -42,6 +64,7 @@ app.getDestSearch = function(dest_str) {
 
         for (i = 0; i < results.length; i += 1) {
           var resultData = results[i];
+
           var addr = resultData.formatted_address;
           var lat = resultData.geometry.location.k;
 
@@ -51,11 +74,13 @@ app.getDestSearch = function(dest_str) {
           $ul.append($res);
           $res.on('click', app.addToMapAndGetDirections(resultData));
 
+          var $divPanelHeading = $res.find('div.panel-heading');
+
           // Lighten up result panel on user mouseover
-          $res.find('div.panel-heading').on('mouseover', function() {
+          $divPanelHeading.on('mouseover', function() {
             $(this).addClass('lightenPanel');
           }).on('mouseout', function() {
-            $(this).removeClass('lightenPanel');
+              $(this).removeClass('lightenPanel');
           });
         }
       } else {

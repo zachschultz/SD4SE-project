@@ -28,10 +28,15 @@
 <div class="container">
 
 
-  <a id="logo-link" href="/"><h1><em>Attractions</em></h1></a>
+
+
+
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-2">
+
+    <div class="col-md-6">
+      <h1 class="styled-header"><a id="logo-link" href="/"><em>Attractions</em></a></h1>
+        <hr>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">You are currently at...</h3>
@@ -41,10 +46,22 @@
         </div>
       </div>
     </div>
+    <div class="col-md-6">
+
+      <h1 class="styled-header">Going somewhere else?</h1>
+      <hr>
+        <form id="dest_form" class="pad-top">
+          <label for="dest_str">Enter destination: </label>
+          <input type="text" name="dest_str" id="dest_str">
+          <input type="submit" id="submit" value="Start!">
+        </form>
+
+      <br>
+    </div>
   </div>
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Nearby attractions</h3>
@@ -52,27 +69,13 @@
         <div class="panel-body">
           <span id="nearby-attractions"><span id="loading">loading</span></span>
           <ul id="nearbyAttractionsUl">
-
           </ul>
         </div>
       </div>
     </div>
-  </div>
+    <div id="putMoreInfoPanelHere" class="col-md-5">
 
-
-
-  <div class="row">
-    <div class="col-md-12">
-        <form id="dest_form" class="pad-top">
-          <label for="dest_str">Enter destination: </label>
-          <input type="text" name="dest_str" id="dest_str">
-          <input type="submit" id="submit" value="Start!">
-        </form>
     </div>
-  </div>
-  <br>
-
-  <div class="row">
     <div class="col-md-6">
       <div id="destResultsDiv">
         <p>Where you looking for...</p>
@@ -81,6 +84,26 @@
           </ul>
       </div>
     </div>
+  </div>
+
+
+
+
+
+  <!-- <div class="row">
+    <div class="col-md-5">
+      <h1 class="styled-header">Going somewhere else?</h1>
+      <hr>
+        <form id="dest_form" class="pad-top">
+          <label for="dest_str">Enter destination: </label>
+          <input type="text" name="dest_str" id="dest_str">
+          <input type="submit" id="submit" value="Start!">
+        </form>
+    </div>
+  </div>
+  <br> -->
+
+  <div class="row">
     <div class="col-md-6">
       <div id="travel-mode-container">
         <span>Which mode of travel? </span>
@@ -91,7 +114,18 @@
           <option value="TRANSIT">Transit</option>
         </select>
       </div>
-      <div id="map-canvas" style="width: 500px; height: 500px"></div>
+      <div id="map-canvas" style="width: 450px; height: 450px"></div>
+
+    </div>
+    <div class="col-md-3">
+      <div class="partyTest">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
       <div id="directions-panel"></div>
     </div>
   </div>
@@ -115,6 +149,6 @@
 <script src="js/getdestsearch.js"></script>
 <script src="js/loaddestonmap.js"></script>
 <script src="js/getnearbyattractions.js"></script>
-
+<script src="js/newlocationsearch.js"></script>
 </body>
 </html>

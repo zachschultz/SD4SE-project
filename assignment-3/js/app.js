@@ -10,9 +10,8 @@ $(function(){
   };
 
   // Run initialization code to get user's location
+  //  Then, with user's info, get nearby attractions
   app.initialize(app.getNearbyAttractions);
-  // With user's info, get nearby attractions
-
 
   // Cache destination form elements, hide it initially
   $destForm = $('#dest_form');
@@ -25,9 +24,12 @@ $(function(){
   var $destResultsDiv = $('#destResultsDiv');
   $destResultsDiv.hide();
 
-
   // Start destination search function on destForm submission
   $destFormSubmit.on('click', function(e) {
+    if ($('div.partyTest').children().length > 0) {
+      console.log('party test yall!');
+      $('div.partyTest').children().remove();
+    }
     e.preventDefault();
     var dest_str = $destForm.find('input[type=text]').val();
     app.getDestSearch(dest_str);

@@ -23,9 +23,7 @@ app.loadDestOnMap = function(resultData) {
   // Google Maps API variables
   var directionsService = new google.maps.DirectionsService();
 
-  console.log(resultData);
-
-  var dest_title = resultData.name;
+  var dest_title = (resultData.name) ? resultData.name : resultData.formatted_address;
   var dest_lat = resultData.geometry.location.k;
   var dest_lng = resultData.geometry.location.D;
 
