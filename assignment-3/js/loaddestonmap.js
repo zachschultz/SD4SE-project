@@ -5,19 +5,19 @@ app.loadDestOnMap = function(resultData) {
   // This function clears the map of the markers so we don't
   //  get overlapping location markers and direction markers
   function clearMapOfMarkers() {
-      var startMarker = markers[0];
-      var endMarker = markers[1];
+    var startMarker = markers[0];
+    var endMarker = markers[1];
 
-      for (var i = 0; i < markers.length; i++) {
-            console.log('setting '+markers[i].title+' map to null');
-            markers[i].setMap(null);
-            markers[i] = null;
-      }
+    for (var i = 0; i < markers.length; i++) {
+      console.log('setting ' + markers[i].title + ' map to null');
+      markers[i].setMap(null);
+      markers[i] = null;
+    }
 
-      // Place back markers into markers array
-      markers = [];
-      markers.push(startMarker);
-      markers.push(endMarker);
+    // Place back markers into markers array
+    markers = [];
+    markers.push(startMarker);
+    markers.push(endMarker);
   }
 
   // Google Maps API variables
@@ -33,11 +33,11 @@ app.loadDestOnMap = function(resultData) {
   var destMarker = new google.maps.Marker({
     position: destLatLng,
     map: map,
-    title:dest_title,
+    title: dest_title,
   });
 
   markers.push(destMarker);
-  console.log("adding "+destMarker.title+" to markers: ");
+  console.log("adding " + destMarker.title + " to markers: ");
   console.log(markers);
 
   // Make an infowindow for the destination marker
@@ -68,10 +68,6 @@ app.loadDestOnMap = function(resultData) {
     }
     directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(map);
-    // directionsDisplay.setOptions({suppressMarkers:true});
-
-
-
 
     directionsDisplay.setPanel(document.getElementById('directions-panel'));
 
@@ -83,15 +79,15 @@ app.loadDestOnMap = function(resultData) {
     clearMapOfMarkers();
 
     var request = {
-      origin:start,
-      destination:end,
+      origin: start,
+      destination: end,
       travelMode: google.maps.TravelMode[selectedMode],
       // [travelMode]
     };
 
     directionsService.route(request, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-console.log("Directions reponse is: ");
+        console.log("Directions reponse is: ");
         console.log(response);
         directionsDisplay.setDirections(response);
       } else {
